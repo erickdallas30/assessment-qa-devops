@@ -4,41 +4,41 @@ const app = express();
 const { bots, playerRecord } = require("./data");
 const { shuffleArray } = require("./utils");
 const cors = require("cors");
-const {ROLLBAR_TOKEN} = process.env
+const { SERVER_PORT, ROLLBAR_TOKEN } = process.env;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // include and initialize the rollbar library with your access token
-var Rollbar = require('rollbar')
+var Rollbar = require("rollbar");
 var rollbar = new Rollbar({
   accessToken: ROLLBAR_TOKEN,
   captureUncaught: true,
   captureUnhandledRejections: true,
-})
+});
 
 // record a generic message and send it to Rollbar
-rollbar.log('Hello world!')
+rollbar.log("Hello world!");
 
 app.get("/api/robots", (req, res) => {
   try {
     res.status(200).send(botsArr);
   } catch (error) {
-    rollbar.error("BUG, BUG , BUG, CAN'T DISPLAY BOTS")
+    rollbar.error("BUG, BUG , BUG, CAN'T DISPLAY BOTS");
     console.log("ERROR GETTING BOTS", error);
     res.sendStatus(400);
   }
 });
 
-app.get("/api/robots/five", (req, res) => {    
+app.get("/api/robots/five", (req, res) => {
   try {
     let shuffled = shuffleArray(bots);
     let choices = shuffled.slice(0, 5);
     let compDuo = shuffled.slice(6, 8);
-    rollbar.info('PLAYER GETTING BOTS TO DUEL')
+    rollbar.info("PLAYER GETTING BOTS TO DUEL");
     res.status(200).send({ choices, compDuo });
-  } catch (error) {    
+  } catch (error) {
     console.log("ERROR GETTING FIVE BOTS", error);
     res.sendStatus(400);
   }
@@ -75,7 +75,9 @@ app.post("/api/duel", (req, res) => {
       res.status(200).send("You lost!");
     } else {
       playerRecord.losses++;
-      rollbar.warning('UPS, THERE IS A WINNER AND IS BEING COUNTED AS A LOSSER')
+      rollbar.warning(
+        "UPS, THERE IS A WINNER AND IS BEING COUNTED AS A LOSSER"
+      );
       res.status(200).send("You won!");
     }
   } catch (error) {
@@ -86,7 +88,7 @@ app.post("/api/duel", (req, res) => {
 
 app.get("/api/player", (req, res) => {
   try {
-    rollbar.info('SENDING PLAYER SCORE AFTER DUEL')
+    rollbar.info("SENDING PLAYER SCORE AFTER DUEL");
     res.status(200).send(playerRecord);
   } catch (error) {
     console.log("ERROR GETTING PLAYER STATS", error);
@@ -94,6 +96,6 @@ app.get("/api/player", (req, res) => {
   }
 });
 
-app.listen(4000, () => {
-  console.log(`Server running on Port 4000`);
+app.listen(SERVER_PORT, () => {
+  console.log(`Server running on Port ${SERVER_PORT}`);
 });
