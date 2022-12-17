@@ -4,9 +4,11 @@ const app = express();
 const { bots, playerRecord } = require("./data");
 const { shuffleArray } = require("./utils");
 const cors = require("cors");
-const {ROLLBAR_TOKEN} = process.env
+const {SERVER_PORT, ROLLBAR_TOKEN} = process.env
+
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 
 // include and initialize the rollbar library with your access token
 var Rollbar = require('rollbar')
@@ -92,6 +94,6 @@ app.get("/api/player", (req, res) => {
   }
 });
 
-app.listen(4000, () => {
-  console.log(`Listening on 4000`);
+app.listen(SERVER_PORT, () => {
+  console.log(`Server running on Port ${SERVER_PORT}`);
 });
