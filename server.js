@@ -4,7 +4,7 @@ const app = express();
 const { bots, playerRecord } = require("./data");
 const { shuffleArray } = require("./utils");
 const cors = require("cors");
-const {SERVER_PORT, ROLLBAR_TOKEN} = process.env
+const {ROLLBAR_TOKEN} = process.env
 
 app.use(cors());
 app.use(express.json());
@@ -94,6 +94,6 @@ app.get("/api/player", (req, res) => {
   }
 });
 
-app.listen(SERVER_PORT, () => {
-  console.log(`Server running on Port ${SERVER_PORT}`);
+app.listen(4000, () => {
+  console.log(`Server running on Port 4000`);
 });
