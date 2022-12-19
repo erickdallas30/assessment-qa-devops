@@ -28,8 +28,8 @@ test('Check that the Draw button works when clicking on it', async () => {
     expect(displayedRandomBots).toBeTruthy()       
 })
 
-//this test is intended to check the bug on the see all bots button, in this case the see alll bots buttons
-// is not working so expect this test to fail, if I would fix the see all bots button bugs It will return 3 passed results
+//this test is intended to check the bug on the see all bots button, in this case the see all bots buttons
+// is not working so expect this test to fail, if I would fix the see all bots button bug It will return 3 passed results
 test('Check that the Add to Duo button works when clicking on it', async () => {
     await driver.findElement(By.id('see-all')).click()
     await driver.sleep(2000)    

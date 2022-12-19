@@ -25,6 +25,8 @@ app.get("/api/robots", (req, res) => {
   try {
     res.status(200).send(botsArr);
   } catch (error) {
+    //this is the first bug I found the botsArr in the send response is not defined because that should be (bots)
+    //I did not fixed on purpose so rollbar can send the error log
     rollbar.error("BUG, BUG , BUG, CAN'T DISPLAY BOTS");
     console.log("ERROR GETTING BOTS", error);
     res.sendStatus(400);
@@ -75,6 +77,8 @@ app.post("/api/duel", (req, res) => {
       res.status(200).send("You lost!");
     } else {
       playerRecord.losses++;
+
+      //This is another bug in the counter, I did not fixed it on purpose to be able to have this warning in rollbar
       rollbar.warning(
         "UPS, THERE IS A WINNER AND IS BEING COUNTED AS A LOSSER"
       );
